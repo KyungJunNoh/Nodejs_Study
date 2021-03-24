@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var mysql_db = require('../db/mysql-db');
+var mysqldb = require('../db/mysql-db');
 
 
 router.get('/', function (req, res, next) {
@@ -11,25 +11,17 @@ router.get('/', function (req, res, next) {
 router.post('/', function (req, res, next) {
     var userId = req.body['userId'];
     var userPw = req.body['userPw'];
-    mysql_db.query('select * from test_user where id=? and pw=?', [userId, userPw], function (err, rows, fields) {
-        if (!err) {
-            if (rows[0] != undefined) {
-                mysql_db.query('delete from test_user where id=?', [userId], function (err, rows, fields) {
-                    if (!err) {
-                        res.send('delete success');
-                    } else {
-                        res.send('error : ' + err);
-                    }
-                });
-            } else {
-                res.send('no data');
-            }
-
+    mysqldb.Select(userId,userPw,function(rows, err){
+        if(rows != "") {
+            mysqldb.Delete(userId,function(rows,err){
+                res.json({"data" : "성공"});
+                console.log("삭제 완료");
+            });
         } else {
-            res.send('error : ' + err);
+            res.json({"data" : "실패"});
+            console.log("삭제 실패");
         }
     });
-
 });
 
 module.exports = router;

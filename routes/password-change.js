@@ -1,36 +1,29 @@
 var express = require('express');
 var router = express.Router();
-
-var mysql_db = require('../db/mysql-db');
-
+var mysqldb = require('../db/mysql-db');
 
 router.get('/', function (req, res, next) {
     res.render('password-change');
 });
 
-router.post('/', function (req, res, next) {
+router.put('/', function (req, res, next) {
     var userId = req.body['userId'];
     var userPw = req.body['userPw'];
     var userPwNew = req.body['userPwNew'];
-    mysql_db.query('select * from test_user where id=? and pw=?', [userId, userPw], function (err, rows, fields) {
-        if (!err) {
-            if (rows[0] != undefined) {
-                mysql_db.query('update test_user set pw=? where id=?', [userPwNew, userId], function (err, rows, fields) {
-                    if (!err) {
-                        res.send('password change success');
-                    } else {
-                        res.send('error : ' + err);
-                    }
+    mysqldb.Select(userId,userPw,function(rows,err){
+        if(!err){
+            console.log(rows);
+            if(rows != ""){
+                mysqldb.Update(userId,userPwNew,function(rows,err){
+                    res.json({"data" : "success"});
                 });
-            } else {
-                res.send('no data');
+            }else{
+                res.json({"data" : "fail"});
             }
-
-        } else {
-            res.send('error : ' + err);
+        }else{
+            console.log(err);
         }
-    });
-
+    })
 });
 
 module.exports = router;
