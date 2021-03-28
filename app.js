@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var logger = require('morgan');
 var router = express.Router();
 var mysqldb = require('./db/mysql-db');
@@ -25,10 +26,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  key: 'sid',
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 24000 * 60 * 60 // 쿠키 유효기간 24시간
+  }
+}));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
 app.use('/login', loginRouter);
 app.use('/join', joinRouter);
 app.use('/password-change', passwordChangeRouter);
