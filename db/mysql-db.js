@@ -33,16 +33,25 @@ module.exports = {
   },
   Insert : function(userId,userPw,callback){
     connection.query('insert into test_user(id,pw)values(?,?)',[userId,userPw],function(err,rows){
+      console.log("[Insert 완료]");
       callback(rows, err);
     });
   },
   Update : function(userId,userPwNew,callback){
     connection.query('UPDATE test_user SET pw=? WHERE id=?',[userPwNew,userId],function(err,rows){
+      console.log("[Update 완료]");
       callback(rows);
     })
   },
   Delete : function(userId,callback){
     connection.query("DELETE FROM test_user WHERE id =?",[userId],function(err,rows){
+      console.log("[Delete 완료]");
+      callback(rows);
+    })
+  },
+  boardInsert : function(title,content,callback){
+    connection.query("INSERT INTO board(title,content)values(?,?)",[title,content],function(err,rows){
+      console.log("[boardInsert 완료]");
       callback(rows);
     })
   }

@@ -10,10 +10,11 @@ var loginRouter = require('./routes/login');
 var joinRouter = require('./routes/join');
 var passwordChangeRouter = require('./routes/password-change');
 var deleteAccountRouter = require('./routes/delete-account');
-
+var boardRouter = require('./routes/board');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const { allowedNodeEnvironmentFlags } = require('process');
 
 var app = express();
 
@@ -42,7 +43,7 @@ app.use('/login', loginRouter);
 app.use('/join', joinRouter);
 app.use('/password-change', passwordChangeRouter);
 app.use('/delete-account',deleteAccountRouter);
-
+app.use('/board',boardRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

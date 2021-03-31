@@ -13,6 +13,7 @@ router.post('/login', function (req, res, next) {
     var userPw = req.body.userPw;
     mysqldb.SQLconnect();
     mysqldb.Select(userId,userPw,function(rows, err){
+        console.log(rows);
         if(rows != "") {
             req.session.userid = userId;
             req.session.save(function(){
