@@ -28,7 +28,7 @@ module.exports = {
   Select : function(userId,userPw,callback){
     connection.query('select * from test_user where id=? and pw = ?',[userId,userPw],function(err,rows){
       console.log("[SELECT 완료]");
-      callback(rows);
+      callback(rows, err);
     });
   },
   Insert : function(userId,userPw,callback){
@@ -40,20 +40,31 @@ module.exports = {
   Update : function(userId,userPwNew,callback){
     connection.query('UPDATE test_user SET pw=? WHERE id=?',[userPwNew,userId],function(err,rows){
       console.log("[Update 완료]");
-      callback(rows);
+      callback(rows, err);
     })
   },
   Delete : function(userId,callback){
-    connection.query("DELETE FROM test_user WHERE id =?",[userId],function(err,rows){
+    connection.query("DELETE FROM test_user WHERE id=?",[userId],function(err,rows){
       console.log("[Delete 완료]");
-      callback(rows);
+      callback(rows, err);
     })
   },
   boardInsert : function(title,content,callback){
     connection.query("INSERT INTO board(title,content)values(?,?)",[title,content],function(err,rows){
       console.log("[boardInsert 완료]");
-      callback(rows);
+      callback(rows,err);
     })
-  }
-  
+  },
+  boardUpdate : function(title,content,idx,callback){
+    connection.query("UPDATE board SET title=?, content=? WHERE idx=?",[title,content,idx],function(err,rows){
+      console.log("[boardUpdate 완료]");
+      callback(rows, err);
+    })
+  },
+  boardDelete : function(idx,callback){
+    connection.query("DELETE FROM board WHERE idx = ?",[idx],function(err,rows){
+      console.log("[boardDelete 완료]");
+      callback(rows,err);
+    })
+  } 
 }

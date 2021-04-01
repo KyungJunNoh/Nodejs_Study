@@ -29,9 +29,6 @@ router.post('/login', function (req, res, next) {
 });
 
 router.post('/logout',function(req,res,err){
-    // req.session.destroy();
-    // res.clearCookie(); // 세션 쿠키 삭제
-    console.log('로그아웃 처리');
     req.session.destroy(
     function (err) {
         if (err) {
@@ -39,7 +36,7 @@ router.post('/logout',function(req,res,err){
             return;
         }
         res.json({"data" : "success"});
-    });//세션정보 삭제    
+    });
 })
 
 module.exports = router;
